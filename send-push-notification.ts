@@ -46,7 +46,7 @@ Deno.serve(async (req) => {
     }
 
     // Send push notification
-    await webpush.sendNotification(subscription, message || "Hello from Deno Push Server!");
+    await webpush.sendNotification(subscription, message || "");
 
     console.log("Notification sent to:", subscription.endpoint);
 
