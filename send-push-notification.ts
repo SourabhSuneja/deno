@@ -1,4 +1,4 @@
-// Deno Deploy Push Notification Server
+// Deno Deploy Push Notification Server (Multiple Subscriptions)
 
 import webpush from "npm:web-push@3.5.0";
 
@@ -36,26 +36,40 @@ Deno.serve(async (req) => {
 
   try {
     // Parse the JSON body
-    const { subscription, message } = await req.json();
+    const { subscriptions, message } = await req.json();
 
-    if (!subscription || !subscription.endpoint) {
-      return new Response("Invalid subscription object", {
+    if (!Array.isArray(subscriptions) || subscriptions.length === 0) {
+      return new Response("Invalid subscriptions array", {
         status: 400,
         headers: corsHeaders
       });
     }
 
-    // Send push notification
-    await webpush.sendNotification(subscription, message || "");
+    const sendResults = [];
 
-    console.log("Notification sent to:", subscription.endpoint);
+    // Loop through each subscription and send notification
+    for (const subscription of subscriptions) {
+      if (!subscription || !subscription.endpoint) {
+        sendResults.push({ endpoint: subscription?.endpoint || "unknown", status: "skipped" });
+        continue;
+      }
 
-    return new Response("Notification sent successfully!", {
+      try {
+        await webpush.sendNotification(subscription, message || "");
+        console.log("Notification sent to:", subscription.endpoint);
+        sendResults.push({ endpoint: subscription.endpoint, status: "success" });
+      } catch (err) {
+        console.error("Error sending to", subscription.endpoint, err);
+        sendResults.push({ endpoint: subscription.endpoint, status: "failed", error: err.message });
+      }
+    }
+
+    return new Response(JSON.stringify({ results: sendResults }), {
       status: 200,
-      headers: corsHeaders
+      headers: { ...corsHeaders, "Content-Type": "application/json" }
     });
   } catch (err) {
-    console.error("Error sending notification:", err);
+    console.error("Error sending notifications:", err);
     return new Response("Failed: " + err.message, {
       status: 500,
       headers: corsHeaders
