@@ -4,8 +4,8 @@ import webpush from "npm:web-push@3.5.0";
 
 // Access VAPID keys from environment variables
 const vapidKeys = {
-  publicKey: "BGd1Oy5sam6Un1U3dL7XfyePdKcEAxM5WNuu5yJwVSD2ya5whvh-gfNjyjZP2P47fQDxvFKYcCTKqKIHKZOZ_dY",
-  privateKey: "Z3lqM7k-Tt4HfBXZxMEorVSDxEFVEOCGsKEHQR7b_lI"
+  publicKey: Deno.env.get("VAPID_PUBLIC_KEY") ?? "",
+  privateKey: Deno.env.get("VAPID_PRIVATE_KEY") ?? ""
 };
 
 // Set your VAPID details
