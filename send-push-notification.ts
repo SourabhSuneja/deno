@@ -4,8 +4,8 @@ import webpush from "npm:web-push@3.5.0";
 
 // Access VAPID keys from environment variables
 const vapidKeys = {
-  publicKey: "public-key",
-  privateKey: "private-key"
+  publicKey: "BGd1Oy5sam6Un1U3dL7XfyePdKcEAxM5WNuu5yJwVSD2ya5whvh-gfNjyjZP2P47fQDxvFKYcCTKqKIHKZOZ_dY",
+  privateKey: "Z3lqM7k-Tt4HfBXZxMEorVSDxEFVEOCGsKEHQR7b_lI"
 };
 
 // Set your VAPID details
