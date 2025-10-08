@@ -55,7 +55,7 @@ Deno.serve(async (req) => {
       }
 
       try {
-        await webpush.sendNotification(subscription, message || "");
+        await webpush.sendNotification(subscription, JSON.stringify(message || ""));
         console.log("Notification sent to:", subscription.endpoint);
         sendResults.push({ endpoint: subscription.endpoint, status: "success" });
       } catch (err) {
