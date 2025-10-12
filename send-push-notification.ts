@@ -8,7 +8,7 @@ const vapidKeys = {
   privateKey: Deno.env.get("VAPID_PRIVATE_KEY") ?? ""
 };
 webpush.setVapidDetails(
-  "mailto:your-email@example.com",
+  "mailto:sourabhsuneja021@gmail.com",
   vapidKeys.publicKey,
   vapidKeys.privateKey
 );
